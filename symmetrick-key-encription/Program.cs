@@ -32,13 +32,20 @@ while (true)
     Console.WriteLine("1: Safely store message\n2: Read message\n0: Exit");
     try
     {
-        int? option = Int32.Parse(Console.ReadLine());
+        int? option = Int32.Parse(Console.ReadLine() ?? string.Empty);
 
         if (option == 1)
         {
-            string? message = Console.ReadLine();
-            var passKey = Encoding.UTF8.GetBytes(pass);
-            encryption.Encrypt(message, passKey);
+            var message = Console.ReadLine();
+
+            if (message != null)
+            {
+                encryption.Encrypt(message, pass);
+            }
+            else
+            {
+                Console.WriteLine("Message is empty");
+            }
         }
         else if (option == 2)
         {

@@ -1,7 +1,10 @@
 ﻿using System.Text;
 using symmetrick_key_encription;
 Encryptor encryption = new Encryptor();
+
+Console.ForegroundColor = ConsoleColor.Yellow;
 Console.WriteLine("Passphrase: ");
+Console.ResetColor();
 
 var pass = string.Empty;
 ConsoleKey key;
@@ -29,27 +32,42 @@ Console.WriteLine("----------------------------------");
 
 while (true)
 {
+    Console.ForegroundColor = ConsoleColor.Cyan;
     Console.WriteLine("1: Safely store message\n2: Read message\n0: Exit");
+    Console.ResetColor();
     try
     {
         int? option = Int32.Parse(Console.ReadLine() ?? string.Empty);
 
         if (option == 1)
         {
+            Console.ForegroundColor = ConsoleColor.Green;
             Console.Write("Message: ");
+            Console.ResetColor();
             var message = Console.ReadLine();
 
             if (message != null)
             {
-                encryption.Encrypt(message, pass);
+                Console.ForegroundColor = ConsoleColor.Green;
+                Console.Write("Filename: ");
+                Console.ResetColor();
+                var filename = Console.ReadLine();
+                if (filename == string.Empty)
+                {
+                    filename = null;
+                }
+                encryption.Encrypt(message, pass, filename: filename);
             }
             else
             {
-                Console.WriteLine("Message is empty");
+                Console.WriteLine("Message can't be empty");
             }
         }
         else if (option == 2)
         {
+            Console.ForegroundColor = ConsoleColor.Green;
+            Console.Write("Filename: ");
+            Console.ResetColor();
             string? filename = Console.ReadLine();
             Console.WriteLine(encryption.Decrypt(pass, filename ?? ""));
         } 
@@ -64,7 +82,9 @@ while (true)
         
     } catch (Exception e)
     {
+        Console.ForegroundColor = ConsoleColor.Red;
         Console.WriteLine(e.Message);
+        Console.ResetColor();
     } 
     Console.WriteLine("----------------------------------");
 }

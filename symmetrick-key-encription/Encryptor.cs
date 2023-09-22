@@ -9,15 +9,14 @@ public class Encryptor
 {
     private const string DocPath = "D:\\SchoolWork\\symmetrick-key-encription\\encryptedmessages";
 
-    public void Encrypt(string message, string key)
+    public void Encrypt(string message, string key, string? filename = null)
     {
         // hash the password
         byte[] salt = RandomNumberGenerator.GetBytes(256 / 8);
         
         byte[] hashedKey = HashPassword(key, salt);
         
-        // Console.Out.WriteLine("hashedKey = {0}", Convert.ToBase64String(hashedKey));
-        
+       
         // encrypt the message
         using var aes = new AesGcm(hashedKey, AesGcm.TagByteSizes.MaxSize);
         
@@ -30,9 +29,7 @@ public class Encryptor
         var tag = new byte[AesGcm.TagByteSizes.MaxSize]; // MaxSize = 16
         
         aes.Encrypt(iv, plaintextBytes, encrypted, tag);
-
-        // Console.WriteLine($"Encrypted message: {Convert.ToBase64String(encrypted)}");
-
+        
         Message outMessage = new Message()
         {
             Salt = Convert.ToBase64String(salt),
@@ -41,17 +38,14 @@ public class Encryptor
             Tag = Convert.ToBase64String(tag)
         };
         
-        // Console.WriteLine($"Salt: {outMessage.Salt}");
-        // Console.WriteLine($"IV: {outMessage.IV}");
-        // Console.WriteLine($"CipherText: {outMessage.CipherText}");
-        // Console.WriteLine($"Tag: {outMessage.Tag}");
-
+        // write to file
         var outFile = JsonSerializer.Serialize(outMessage); 
-        File.WriteAllText($"{DocPath}\\{key}.json", outFile);
+        File.WriteAllText($"{DocPath}\\{filename ?? DateTime.UtcNow.ToString("yyMMddHHmmss")}.json", outFile);
     }
     
     public string Decrypt(string key, string filename)
     {
+        // read from file
         string json = File.ReadAllText($"{DocPath}\\{filename}.json");
         Message? inMessage = JsonSerializer.Deserialize<Message>(json);
         
@@ -60,8 +54,10 @@ public class Encryptor
         byte[] cipherText = Convert.FromBase64String(inMessage.CipherText);
         byte[] tag = Convert.FromBase64String(inMessage.Tag);
         
+        // hash the password
         byte[] hashedKey = HashPassword(key, salt);
         
+        // decrypt the message
         using var aes = new AesGcm(hashedKey, AesGcm.TagByteSizes.MaxSize);
         
         byte[] decrypted = new byte[cipherText.Length];

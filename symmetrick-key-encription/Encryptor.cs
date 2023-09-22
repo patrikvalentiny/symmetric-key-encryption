@@ -5,7 +5,7 @@ using System.Text.Json;
 
 namespace symmetrick_key_encription;
 
-public class Encryption
+public class Encryptor
 {
     public void Encrypt(string message, string key)
     {

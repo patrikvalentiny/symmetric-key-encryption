@@ -1,6 +1,6 @@
 ﻿using System.Text;
 using symmetrick_key_encription;
-Encryption encryption = new Encryption();
+Encryptor encryption = new Encryptor();
 Console.WriteLine("Passphrase: ");
 
 var pass = string.Empty;

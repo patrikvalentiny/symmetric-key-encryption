@@ -36,6 +36,7 @@ while (true)
 
         if (option == 1)
         {
+            Console.Write("Message: ");
             var message = Console.ReadLine();
 
             if (message != null)
@@ -49,7 +50,8 @@ while (true)
         }
         else if (option == 2)
         {
-            
+            string? filename = Console.ReadLine();
+            Console.WriteLine(encryption.Decrypt(pass, filename ?? ""));
         } 
         else if (option == 0)
         {
@@ -57,12 +59,11 @@ while (true)
         } 
         else
         {
-            throw new Exception();
+            Console.WriteLine("Invalid option");
         }
         
     } catch (Exception e)
     {
-        Console.WriteLine("Invalid option");
         Console.WriteLine(e.Message);
     } 
     Console.WriteLine("----------------------------------");

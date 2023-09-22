@@ -1,5 +1,6 @@
-﻿using System.Text;
-using symmetrick_key_encription;
+﻿using symmetrick_key_encription;
+
+
 Encryptor encryption = new Encryptor();
 
 Console.ForegroundColor = ConsoleColor.Yellow;

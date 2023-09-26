@@ -73,7 +73,7 @@ public class Encryptor
             password: password,
             salt: salt,
             prf: KeyDerivationPrf.HMACSHA256,
-            iterationCount: 100000,
+            iterationCount: 1000000,
             numBytesRequested: 256 / 8);
     }
 }
